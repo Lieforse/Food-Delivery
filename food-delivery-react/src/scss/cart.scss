@@ -1,0 +1,157 @@
+.mini-nav {
+  margin-top: 113px;
+  height: 70px;
+  background-color: $food-bg;
+  border-bottom: 1px solid $body-bg;
+  display: flex;
+  align-items: center;
+  .container {
+    padding: 0 30px;
+
+    .breadcrumbs {
+      display: flex;
+      margin: 0;
+
+      li {
+        list-style: none;
+      }
+
+      .breadcrumb-link {
+        font-family: $main-font;
+        font-size: 16px;
+        color: #000;
+        margin: 0;
+        padding: 0 5px;
+        text-decoration: none;
+        outline: none;
+
+        &:hover {
+          color: $secondary-color;
+        }
+
+        &.active {
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+}
+
+.cart-section {
+  margin-top: 35px;
+  width: 100%;
+  border: 1px solid $body-bg;
+  background-color: $food-bg;
+  margin-bottom: 130px;
+
+  .cart-form {
+    .cart-head {
+      margin: 0 auto;
+      padding: 0 15px;
+      height: 60px;
+      max-width: 1020px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid $body-bg;
+      .row {
+        width: 100%;
+
+        .col,
+        .col-7 {
+          font-family: $main-font;
+          font-weight: 500;
+          font-size: 16px;
+          text-align: left;
+        }
+        .col {
+          text-align: center;
+        }
+      }
+    }
+    .cart-body {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid $body-bg;
+
+        .col {
+          text-align: center;
+        }
+
+        .product {
+          display: flex;
+          align-items: center;
+
+          span {
+            font-size: 20px;
+            color: $secondary-color;
+
+            &:hover {
+              color: $secondary-hover;
+              cursor: pointer;
+            }
+          }
+          img {
+            width: 90px;
+            height: 90px;
+            margin: 10px;
+            border-radius: 10px;
+          }
+          h6 {
+            font-family: $main-font;
+            font-size: 16px;
+
+            &:hover {
+              color: $secondary-color;
+              cursor: pointer;
+            }
+          }
+        }
+        .amount {
+          display: flex;
+          justify-content: center;
+          .input-container {
+            @extend %input-container;
+          }
+        }
+      }
+    }
+    .cart-foot {
+      height: 70px;
+      width: 100%;
+      padding: 0 15px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      .summary {
+        font-family: $main-font;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 250px;
+
+        p {
+          margin: 0;
+          span {
+            color: $secondary-color;
+          }
+        }
+
+        .button {
+          @extend %button;
+        }
+      }
+    }
+  }
+}

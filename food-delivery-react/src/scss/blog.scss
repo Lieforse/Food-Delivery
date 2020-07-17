@@ -1,0 +1,80 @@
+.blog-container {
+  display: flex;
+  margin-top: 35px;
+
+  .row {
+    padding-left: 8px;
+    .col-auto {
+      margin-bottom: 16px;
+      .card {
+        max-width: 780px;
+        img {
+          border-radius: 0.25rem 0.25rem 0 0;
+        }
+        .card-body {
+          h5 {
+            font-family: $main-font;
+            font-size: 24px;
+            color: $secondary-color;
+            text-align: left;
+
+            &:hover {
+              color: $secondary-hover;
+              cursor: pointer;
+            }
+          }
+          p {
+            font-family: $text-font;
+            font-size: 16px;
+            color: $text-color;
+            text-align: left;
+          }
+        }
+        .card-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 80px;
+          padding: 15px 20px;
+          border-top: 1px solid $body-bg;
+          .info-container {
+            display: flex;
+            width: 300px;
+            p {
+              font-family: $text-font;
+              font-size: 15px;
+              color: $text-color;
+              margin: 0 5%;
+            }
+            .likes:hover {
+              color: $secondary-color;
+              cursor: pointer;
+            }
+          }
+          .btn {
+            padding: 7px 13px;
+            background-color: #e8500e;
+            border: 1px solid #e8500e;
+            font-family: "Montserrat";
+            font-size: 16px;
+            color: #fff;
+
+            &:hover {
+              background-color: $secondary-hover;
+              border-color: $secondary-color;
+            }
+
+            &:focus {
+              outline: none;
+              border: #ff9466 1px solid;
+              box-shadow: 0 0 8px rgba(255, 148, 102, 1);
+            }
+            &:active {
+              background-color: $secondary-hover;
+            }
+          }
+        }
+      }
+    }
+  }
+}

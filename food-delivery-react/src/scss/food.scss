@@ -1,0 +1,261 @@
+body {
+  background-color: #fff;
+}
+
+.sort-bar {
+  margin-top: 113px;
+  height: 70px;
+  background-color: $food-bg;
+  border-bottom: 1px solid $body-bg;
+  display: flex;
+  align-items: center;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+
+    p {
+      font-family: $main-font;
+      font-size: 16px;
+      color: #000;
+      margin: 0;
+      display: block;
+    }
+
+    .sort {
+      display: flex;
+      cursor: pointer;
+      .mdi-chevron-down {
+        font-size: 18px;
+        padding-left: 2px;
+      }
+
+      &:hover {
+        p {
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+}
+
+.food-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 35px;
+  margin-bottom: 130px;
+}
+
+.sidebar {
+  height: fit-content;
+  margin: 0 8px 0 0;
+  width: 360px;
+  background-color: $food-bg;
+  border: 1px solid $body-bg;
+  border-radius: 10px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 125px;
+
+  .sidebar-header {
+    background-color: $secondary-color;
+    height: 50px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h5 {
+      font-family: $main-font;
+      font-size: 18px;
+      color: $food-bg;
+      margin: 0;
+    }
+  }
+  .sidebar-content {
+    form {
+      display: flex;
+      flex-direction: column;
+
+      .search {
+        width: 318px;
+        height: 38px;
+        border: 1px solid $body-bg;
+        padding-left: 6px;
+        margin: 15px auto 27px;
+        font-family: $main-font;
+        font-size: 16px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+      .checkbox-container {
+        display: block;
+        position: relative;
+        width: fit-content;
+        padding-left: 65px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        user-select: none;
+
+        input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+        .round {
+          position: absolute;
+          top: 0;
+          left: 35px;
+          height: 22px;
+          width: 22px;
+          border: 1px solid $body-bg;
+          border-radius: 50%;
+          background-color: #fff;
+
+          &::after {
+            content: "";
+            position: absolute;
+            display: none;
+          }
+        }
+
+        &:hover {
+          p {
+            color: $secondary-color;
+          }
+          .round {
+            border-color: $secondary-color;
+          }
+        }
+
+        & input:checked ~ .round {
+          background-color: $secondary-color;
+          border-color: $secondary-color;
+        }
+        & input:checked ~ .round::after {
+          display: block;
+        }
+        & .round::after {
+          left: 7px;
+          top: 4px;
+          width: 7px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          transform: rotate(45deg);
+        }
+        p {
+          width: fit-content;
+          font-family: $main-font;
+          font-size: 16px;
+          color: #000;
+          margin: 0;
+        }
+      }
+      .submit-container {
+        margin-top: 17px;
+        height: 78px;
+        border-top: 1px solid $body-bg;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input {
+          width: 320px;
+          height: 40px;
+          background-color: $secondary-color;
+          border: 1px solid $main-font;
+
+          font-family: $main-font;
+          font-size: 18px;
+          color: #fff;
+
+          &:hover {
+            background-color: $secondary-hover;
+            border-color: $secondary-color;
+          }
+
+          &:focus {
+            outline: none;
+            border: #ff9466 1px solid;
+            box-shadow: 0 0 8px rgba(255, 148, 102, 1);
+            background-color: $secondary-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+.food-content-section {
+  .row {
+    padding-left: 8px;
+    .col-auto {
+      padding: 0 8px;
+      margin-bottom: 16px;
+      .card {
+        position: relative;
+        max-width: 360px;
+        min-height: 470px;
+        h5 {
+          text-align: center;
+          font-family: $main-font;
+          font-size: 18px;
+          color: #000;
+          margin: 10px 0 15px;
+        }
+        p {
+          text-align: center;
+          font-family: $text-font;
+          font-size: 16px;
+          color: $text-color;
+        }
+        .add-container {
+          max-width: inherit;
+          height: 70px;
+          border-top: 1px solid $body-bg;
+          display: flex;
+          justify-content: space-evenly;
+          align-items: center;
+
+          p {
+            font-family: $main-font;
+            font-size: 22px;
+            color: $secondary-color;
+            margin: 0;
+          }
+          .input-container {
+            @extend %input-container;
+          }
+          .button-submit {
+            padding: 7px 13px;
+            background-color: $secondary-color;
+            border: 1px solid $secondary-color;
+            font-family: $main-font;
+            font-size: 16px;
+            color: #fff;
+
+            &:hover {
+              background-color: $secondary-hover;
+              border-color: $secondary-color;
+            }
+
+            &:focus {
+              outline: none;
+              border: #ff9466 1px solid;
+              box-shadow: 0 0 8px rgba(255, 148, 102, 1);
+            }
+            &:active {
+              background-color: $secondary-hover;
+            }
+          }
+        }
+      }
+    }
+  }
+}
