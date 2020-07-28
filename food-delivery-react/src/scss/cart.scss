@@ -120,6 +120,8 @@
           display: flex;
           justify-content: center;
           .input-container {
+            display: flex;
+            align-items: center;
             @extend %input-container;
           }
         }

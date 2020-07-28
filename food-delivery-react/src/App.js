@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Food from "./pages/Food";
 import Blog from "./pages/Blog";
 import Cart from "./pages/Cart";
-import { Navbar } from "./components/Navbar";
+import Navbar from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import ScrollToTop from "./components/scripts/ScrollToTop";
 

@@ -5,6 +5,7 @@ const initialState = {
   appliedSearch: "",
   appliedFilters: [],
   filteredProducts: [],
+  appliedSortMethod: "",
 };
 
 function mealsReducer(state = initialState, action) {
@@ -16,22 +17,19 @@ function mealsReducer(state = initialState, action) {
   } else if (action.type === "ADD_TO_CART") {
     let addedMeal = state.meals.find((meal) => meal.meal_id === action.id);
     let existed_meal = state.cart.find((meal) => action.id === meal.meal_id);
-    console.log("addedMeal menu", addedMeal, "existed_meal menu", existed_meal);
 
     if (!("quantity" in addedMeal)) {
       addedMeal.quantity = 1;
     }
 
     if (!("totalPrice" in addedMeal)) {
-      addedMeal.totalPrice =
-        parseInt(addedMeal.price) * addedMeal.quantity + "$";
+      addedMeal.totalPrice = parseInt(addedMeal.price) * addedMeal.quantity;
     }
 
     if (typeof existed_meal != "undefined") {
       existed_meal.quantity += addedMeal.quantity;
-      console.log(addedMeal.price);
       existed_meal.totalPrice =
-        existed_meal.quantity * parseInt(addedMeal.price) + "$";
+        existed_meal.quantity * parseInt(addedMeal.price);
 
       return {
         ...state,
@@ -61,8 +59,6 @@ function mealsReducer(state = initialState, action) {
     } else if (foundItem.quantity >= 1) {
       foundItem.quantity += 1;
       foundItem.totalPrice += parseInt(foundItem.price);
-      foundItem.totalPrice += "$";
-      console.log("foundItem.quantity: ", foundItem.quantity);
     }
 
     newMeals[foundId] = foundItem;
@@ -84,12 +80,10 @@ function mealsReducer(state = initialState, action) {
     foundItem.totalPrice = parseInt(foundItem.totalPrice);
     if (foundItem.quantity === 1) {
       foundItem.quantity = 1;
-      foundItem.totalPrice = parseInt(foundItem.price) + "$";
+      foundItem.totalPrice = parseInt(foundItem.price);
     } else if (foundItem.quantity >= 1) {
       foundItem.quantity -= 1;
       foundItem.totalPrice -= parseInt(foundItem.price);
-      foundItem.totalPrice += "$";
-      console.log("foundItem.quantity: ", foundItem.quantity);
     }
 
     newMeals[foundId] = foundItem;
@@ -108,13 +102,9 @@ function mealsReducer(state = initialState, action) {
     } else if (foundItem.quantity >= 1) {
       foundItem.quantity += 1;
       foundItem.totalPrice += parseInt(foundItem.price);
-      foundItem.totalPrice += "$";
-      console.log("foundItem.quantity: ", foundItem.quantity);
     }
 
     newCart[foundId] = foundItem;
-    console.log("total: ", state.total);
-    console.log("foundItem cart", foundItem);
     return {
       ...state,
       cart: newCart,
@@ -124,6 +114,7 @@ function mealsReducer(state = initialState, action) {
     let newCart = [...state.cart];
     let foundItem = state.cart.find((meal) => meal.meal_id === action.id);
     let foundId = state.cart.findIndex((meal) => meal.meal_id === action.id);
+    let totalCheck = false;
 
     if (!("quantity" in foundItem)) {
       foundItem.quantity = 1;
@@ -132,27 +123,26 @@ function mealsReducer(state = initialState, action) {
       foundItem.totalPrice = parseInt(foundItem.price);
     }
     foundItem.totalPrice = parseInt(foundItem.totalPrice);
+    if (foundItem.quantity <= 1) {
+      totalCheck = true;
+    }
     if (foundItem.quantity === 1) {
       foundItem.quantity = 1;
-      foundItem.totalPrice = parseInt(foundItem.price) + "$";
+      foundItem.totalPrice = parseInt(foundItem.price);
     } else if (foundItem.quantity >= 1) {
       foundItem.quantity -= 1;
       foundItem.totalPrice -= parseInt(foundItem.price);
-      foundItem.totalPrice += "$";
-      console.log("foundItem.quantity: ", foundItem.quantity);
     }
 
     newCart[foundId] = foundItem;
     return {
       ...state,
       cart: newCart,
-      total: state.total - parseInt(foundItem.price),
+      total: totalCheck ? state.total : state.total - parseInt(foundItem.price),
     };
   } else if (action.type === "CART_REMOVE_MEAL") {
     let mealToRemove = state.cart.find((meal) => meal.meal_id === action.id);
     let newCart = state.cart.filter((meal) => action.id !== meal.meal_id);
-    console.log("mealToRemove.totalPrice:", mealToRemove.totalPrice);
-    console.log("state.total:", state.total);
 
     let newTotal = state.total - parseInt(mealToRemove.totalPrice);
     return {
@@ -161,9 +151,6 @@ function mealsReducer(state = initialState, action) {
       total: newTotal,
     };
   } else if (action.type === "MEALS_FILTER_SEARCH") {
-    console.log("action.value: ", action.value);
-    console.log("filteredProducts___search: ", state.filteredProducts);
-
     let newState = Object.assign({}, state);
     let value = action.value.toLowerCase();
     newState.appliedSearch = value;
@@ -179,11 +166,28 @@ function mealsReducer(state = initialState, action) {
       );
     }
 
+    if (state.appliedSortMethod.length !== 0) {
+      let sortFilter = state.appliedSortMethod;
+      if (sortFilter === "Sort by popularity") {
+        newState.filteredProducts.sort((a, b) => a.orders - b.orders);
+      } else if (sortFilter === "Sort by price: high to low") {
+        newState.filteredProducts.sort(
+          (a, b) => parseInt(b.price) - parseInt(a.price)
+        );
+      } else if (sortFilter === "Sort by price: low to high") {
+        newState.filteredProducts.sort(
+          (a, b) => parseInt(a.price) - parseInt(b.price)
+        );
+      } else {
+        newState.filteredProducts.sort((a, b) => a.meal_id - b.meal_id);
+      }
+    }
+
     return newState;
   } else if (action.type === "MEALS_FILTER_CATEGORY_ADD") {
     let newState = Object.assign({}, state);
     let value = action.value;
-    newState.appliedFilters.push(value);
+    newState.appliedFilters.push(value.toLowerCase());
 
     if (state.appliedSearch.length !== 0) {
       newState.filteredProducts = state.meals.filter(
@@ -195,6 +199,23 @@ function mealsReducer(state = initialState, action) {
       newState.filteredProducts = state.meals.filter((meal) =>
         state.appliedFilters.includes(meal.type.toLowerCase())
       );
+    }
+
+    if (state.appliedSortMethod.length !== 0) {
+      let sortFilter = state.appliedSortMethod;
+      if (sortFilter === "Sort by popularity") {
+        newState.filteredProducts.sort((a, b) => a.orders - b.orders);
+      } else if (sortFilter === "Sort by price: high to low") {
+        newState.filteredProducts.sort(
+          (a, b) => parseInt(b.price) - parseInt(a.price)
+        );
+      } else if (sortFilter === "Sort by price: low to high") {
+        newState.filteredProducts.sort(
+          (a, b) => parseInt(a.price) - parseInt(b.price)
+        );
+      } else {
+        newState.filteredProducts.sort((a, b) => a.meal_id - b.meal_id);
+      }
     }
 
     return newState;
@@ -224,6 +245,42 @@ function mealsReducer(state = initialState, action) {
       );
     }
 
+    if (state.appliedSortMethod.length !== 0) {
+      let sortFilter = state.appliedSortMethod;
+      if (sortFilter === "Sort by popularity") {
+        newState.filteredProducts.sort((a, b) => a.orders - b.orders);
+      } else if (sortFilter === "Sort by price: high to low") {
+        newState.filteredProducts.sort(
+          (a, b) => parseInt(b.price) - parseInt(a.price)
+        );
+      } else if (sortFilter === "Sort by price: low to high") {
+        newState.filteredProducts.sort(
+          (a, b) => parseInt(a.price) - parseInt(b.price)
+        );
+      } else {
+        newState.filteredProducts.sort((a, b) => a.meal_id - b.meal_id);
+      }
+    }
+
+    return newState;
+  } else if (action.type === "SORT_MEALS") {
+    let newState = JSON.parse(JSON.stringify(state));
+    let sortFilter = action.sortFilter;
+    newState.appliedSortMethod = sortFilter;
+
+    if (sortFilter === "Sort by popularity") {
+      newState.filteredProducts.sort((a, b) => a.orders - b.orders);
+    } else if (sortFilter === "Sort by price: high to low") {
+      newState.filteredProducts.sort(
+        (a, b) => parseInt(b.price) - parseInt(a.price)
+      );
+    } else if (sortFilter === "Sort by price: low to high") {
+      newState.filteredProducts.sort(
+        (a, b) => parseInt(a.price) - parseInt(b.price)
+      );
+    } else {
+      newState.filteredProducts.sort((a, b) => a.meal_id - b.meal_id);
+    }
     return newState;
   } else {
     return state;

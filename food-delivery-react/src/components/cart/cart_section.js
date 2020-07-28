@@ -7,80 +7,6 @@ import {
 } from "../actions/mealsActions";
 
 class CartSection extends React.Component {
-  /* constructor(props) {
-    super(props);
-    this.state = {
-      cart: [],
-    };
-
-    this.mealChangeCounterv = this.mealChangeCounter.bind(this);
-    this.orderItemRemove = this.orderItemRemove.bind(this);
-  } */
-
-  /* componentWillMount() {
-    this.orderItemModel();
-  } */
-
-  /* orderItemModel = () => {
-    let order_item = {};
-    let lS = JSON.parse(localStorage.getItem("cart")).map((mealItem) => [
-      mealItem,
-      order_item,
-    ]);
-    this.setState({
-      cart: lS,
-    });
-    console.log(lS);
-  }; */
-
-  /* mealChangeCounter = (id, isPlus) => {
-    let newCart = [...this.state.cart];
-    let foundItem = this.state.cart.find((meal) => meal.meal_id === id);
-    let foundId = this.state.cart.findIndex((meal) => meal.meal_id === id);
-
-    console.log(newCart);
-
-    this.priceMultiplier = (isPlus) => {
-      if (!("totalPrice" in foundItem)) {
-        foundItem.totalPrice = parseInt(foundItem.price);
-      }
-      foundItem.totalPrice = parseInt(foundItem.totalPrice);
-      if (isPlus) {
-        console.log(parseInt(foundItem.price));
-        foundItem.totalPrice += parseInt(foundItem.price);
-        console.log(foundItem.totalPrice);
-      } else {
-        foundItem.totalPrice -= parseInt(foundItem.price);
-      }
-
-      foundItem.totalPrice += "$";
-      return foundItem.totalPrice;
-    };
-
-    if (!("quantity" in foundItem)) {
-      foundItem.quantity = 1;
-    }
-    if (foundItem.quantity >= 1) {
-      if (isPlus) {
-        foundItem.quantity += 1;
-        this.priceMultiplier(isPlus);
-      } else {
-        if (foundItem.quantity === 1) {
-          foundItem.quantity = 1;
-        } else {
-          foundItem.quantity -= 1;
-          this.priceMultiplier(isPlus);
-        }
-      }
-    }
-
-    newCart[foundId] = foundItem;
-
-    this.setState({ cart: newCart });
-  };
-
-  orderItemRemove = () => {}; */
-
   cartAddQuantity = (id) => {
     this.props.cartAddMealQuantity(id);
   };
@@ -123,29 +49,27 @@ class CartSection extends React.Component {
                   <div className="col col-1 price">{cartItem.price}</div>
                   <div className="col amount">
                     <div className="input-container">
-                      <input
-                        type="button"
-                        className="button"
-                        value="-"
+                      <div
+                        className="button minus"
+                        tabindex="0"
                         onClick={() => this.cartSubQuantity(cartItem.meal_id)}
-                      />
+                      ></div>
                       <input
                         type="text"
-                        value={cartItem.quantity}
+                        value={cartItem.quantity || 1}
                         maxLength="2"
                         className="counter"
                         placeholder="0"
                         readOnly
                       />
-                      <input
-                        type="button"
-                        className="button"
-                        value="+"
+                      <div
+                        className="button plus"
+                        tabindex="0"
                         onClick={() => this.cartAddQuantity(cartItem.meal_id)}
-                      />
+                      ></div>
                     </div>
                   </div>
-                  <div className="col col-1 total">{cartItem.totalPrice}</div>
+                  <div className="col col-1 total">{cartItem.totalPrice}$</div>
                 </div>
               ))}
               <div className="cart-foot">

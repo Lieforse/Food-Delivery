@@ -21,13 +21,6 @@ export function mealsIsLoading(bool) {
   };
 }
 
-export function mealsFetchDataSuccess(meals) {
-  return {
-    type: "MEALS_FETCH_DATA_SUCCESS",
-    meals,
-  };
-}
-
 export function addMealToCart(id) {
   return {
     type: "ADD_TO_CART",
@@ -91,46 +84,9 @@ export function removeCategoryFilter(value) {
   };
 }
 
-/* export function mealsFetchData() {
-  return (dispatch) => {
-    dispatch(mealsIsLoading(true));
-
-    fetch("http://192.168.0.107:4001/meal/select")
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-
-        dispatch(mealsIsLoading(false));
-
-        return response;
-      })
-      .then((response) => response.json())
-      .then((meals) => dispatch(mealsFetchDataSuccess(meals)))
-      .catch(() => dispatch(mealsHasErrored(true)));
+export function sortMeals(sortFilter) {
+  return {
+    type: "SORT_MEALS",
+    sortFilter,
   };
-} */
-
-/* export function fetchMeals() {
-  return function (dispatch) {
-    dispatch({
-      type: "FETCH_MEALS_REQUEST",
-    });
-    return fetch("http://192.168.0.107:4001/meal/select")
-      .then((response) => response.json().then((body) => ({ response, body })))
-      .then(({ response, body }) => {
-        if (!response.ok) {
-          dispatch({
-            type: "FETCH_MEALS_FAILURE",
-            error: body.error,
-          });
-        } else {
-          dispatch({
-            type: "FETCH_MEALS_SUCCESS",
-            meals: body,
-          });
-          console.log("cartActions:", body);
-        }
-      });
-  };
-} */
+}

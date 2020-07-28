@@ -11,6 +11,7 @@ class FilterBar extends React.Component {
     super(props);
 
     this.categorySet = this.categorySet.bind(this);
+    this.unfoldFilterBar = this.unfoldFilterBar.bind(this);
   }
 
   categorySet = () => {
@@ -24,23 +25,34 @@ class FilterBar extends React.Component {
         <span className="round"></span>
       </label>
     )));
-    console.log(categories);
   };
 
   mealsFilterSearch = (event) => {
     let value = event.target.value;
-    console.log(event);
     this.props.searchMeals(value);
   };
 
   mealsFilterCheckbox = (event) => {
     let category = event.target.value;
     if (event.target.checked) {
-      console.log("add: ", category);
       this.props.addCategoryFilter(category);
     } else {
-      console.log("remove: ", category);
       this.props.removeCategoryFilter(category);
+    }
+  };
+
+  unfoldFilterBar = () => {
+    const miniSidebar = document.querySelector(".mini-sidebar");
+    const miniSidebarHeader = document.querySelector(".sidebar-header-js");
+    const miniSidebarContent = document.querySelector(".sidebar-content-js");
+    if (miniSidebar.classList.contains("active")) {
+      miniSidebar.classList.remove("active");
+      miniSidebarHeader.classList.remove("active");
+      miniSidebarContent.classList.remove("active");
+    } else {
+      miniSidebar.classList.add("active");
+      miniSidebarHeader.classList.add("active");
+      miniSidebarContent.classList.add("active");
     }
   };
 
@@ -52,7 +64,7 @@ class FilterBar extends React.Component {
             <h5>Search filters</h5>
           </div>
           <div className="sidebar-content">
-            <form action="" /* onSubmit={this.mealsFilterSearch} */>
+            <form action="">
               <input
                 className="search"
                 type="text"
@@ -72,9 +84,38 @@ class FilterBar extends React.Component {
                   </label>
                 )
               )}
-              {/* <div className="submit-container">
-                <input type="submit" className="btn submit" value="Search" />
-              </div> */}
+            </form>
+          </div>
+        </div>
+
+        <div className="sidebar mini-sidebar mini-sidebar-js">
+          <div
+            className="sidebar-header sidebar-header-js"
+            onClick={() => this.unfoldFilterBar()}
+          >
+            <h5>Search filters</h5>
+          </div>
+          <div className="sidebar-content sidebar-content-js">
+            <form action="">
+              <input
+                className="search"
+                type="text"
+                placeholder="Search some food..."
+                onChange={this.mealsFilterSearch}
+              />
+              {[...new Set(this.props.meals.map((meal) => meal.type))].map(
+                (category) => (
+                  <label className="checkbox-container" key={category}>
+                    <p>{category}</p>
+                    <input
+                      value={category}
+                      type="checkbox"
+                      onChange={(event) => this.mealsFilterCheckbox(event)}
+                    />
+                    <span className="round"></span>
+                  </label>
+                )
+              )}
             </form>
           </div>
         </div>

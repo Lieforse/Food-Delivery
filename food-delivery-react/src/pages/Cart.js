@@ -24,8 +24,8 @@ class Cart extends React.Component {
 const mapStateToProps = (state) => {
   console.log(state);
   return {
-    cart: state.cart,
-    total: state.total,
+    cart: state.mealsReducer.cart,
+    total: state.mealsReducer.total,
   };
 };
 

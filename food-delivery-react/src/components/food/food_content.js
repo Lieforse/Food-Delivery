@@ -13,25 +13,15 @@ class FoodContent extends React.Component {
       postsPerPage: 6,
       currentPage: 1,
     };
-    /* this.mealChangeCounter = this.mealChangeCounter.bind(this); */
-    /* this.addToCart = this.addToCart.bind(this); */
-    this.sortMeals = this.sortMeals.bind(this);
+    this.paginateMeals = this.paginateMeals.bind(this);
     this.paginate = this.paginate.bind(this);
   }
 
   componentWillMount() {
-    /* this.getMeals(); */
-    this.sortMeals();
+    this.paginateMeals();
   }
 
-  sortMeals = () => {
-    let currentMeals = [];
-    /* console.log("this.props.filteredProducts: ", this.props.filteredProducts);
-    if (this.props.filteredProducts[0] === undefined) {
-      currentMeals = this.props.meals;
-    } else {
-      currentMeals = this.props.filteredProducts;
-    } */
+  paginateMeals = () => {
     const indexOfLastPost = this.state.postsPerPage * this.state.currentPage;
     const indexOfFistPost =
       (this.state.currentPage - 1) * this.state.postsPerPage;
@@ -44,24 +34,22 @@ class FoodContent extends React.Component {
     if (this.props.filteredProducts[0] === undefined) {
       return false;
     } else {
-      console.log(currentPosts);
       arr = currentPosts.map((meal) => (
         <div className="col-auto" key={meal.meal_id}>
           <div className="card">
-            <img src="/images/images/food/food1.jpg" alt="" />
+            <img src={meal.image} alt="" />
             <div className="card-body">
               <h5 className="card-title">{meal.name}</h5>
               <p className="card-text">{meal.components}</p>
             </div>
             <div className="add-container">
-              <p className="price">{meal.totalPrice || meal.price}</p>
+              <p className="price">{meal.totalPrice || meal.price}$</p>
               <div className="input-container">
-                <input
-                  type="button"
+                <div
                   className="button minus"
-                  value="-"
+                  tabIndex="0"
                   onClick={() => this.subQuantity(meal.meal_id)}
-                />
+                ></div>
                 <input
                   type="text"
                   value={meal.quantity || 1}
@@ -70,12 +58,11 @@ class FoodContent extends React.Component {
                   placeholder="0"
                   readOnly
                 />
-                <input
-                  type="button"
+                <div
                   className="button plus"
-                  value="+"
+                  tabIndex="0"
                   onClick={() => this.addQuantity(meal.meal_id)}
-                />
+                ></div>
               </div>
               <input
                 type="button"
@@ -103,12 +90,23 @@ class FoodContent extends React.Component {
       pageNumbers.push(i);
     }
 
+    const addActive = (number) => {};
+
     return (
       <nav>
         <ul className="pagination">
           {pageNumbers.map((number) => (
-            <li className="page-item" key={number}>
-              <div className="page-link" onClick={() => this.paginate(number)}>
+            <li
+              className="page-item"
+              key={number}
+              onClick={() => this.paginate(number)}
+            >
+              <div
+                className={`page-link ${
+                  this.state.currentPage == number ? "active" : ""
+                }`}
+                onClick={() => addActive(number)}
+              >
                 {number}
               </div>
             </li>
@@ -138,51 +136,7 @@ class FoodContent extends React.Component {
   render() {
     return (
       <div className="food-content-section">
-        <div className="row">
-          {/* {this.props.meals.map((meal) => (
-            <div className="col-auto" key={meal.meal_id}>
-              <div className="card">
-                <img src="/images/images/food/food1.jpg" alt="" />
-                <div className="card-body">
-                  <h5 className="card-title">{meal.name}</h5>
-                  <p className="card-text">{meal.components}</p>
-                </div>
-                <div className="add-container">
-                  <p className="price">{meal.totalPrice || meal.price}</p>
-                  <div className="input-container">
-                    <input
-                      type="button"
-                      className="button minus"
-                      value="-"
-                      onClick={() => this.subQuantity(meal.meal_id)}
-                    />
-                    <input
-                      type="text"
-                      value={meal.quantity || 1}
-                      maxLength="2"
-                      className="counter"
-                      placeholder="0"
-                      readOnly
-                    />
-                    <input
-                      type="button"
-                      className="button plus"
-                      value="+"
-                      onClick={() => this.addQuantity(meal.meal_id)}
-                    />
-                  </div>
-                  <input
-                    type="button"
-                    className="button-submit"
-                    value="Add to cart"
-                    onClick={() => this.addToCart(meal.meal_id)}
-                  />
-                </div>
-              </div>
-            </div>
-          ))} */}
-          {this.sortMeals()}
-        </div>
+        <div className="row">{this.paginateMeals()}</div>
         {this.pagination()}
       </div>
     );
