@@ -15,7 +15,7 @@ db.serialize(() => {
     type TEXT,
     description TEXT,
     components TEXT,
-    price TEXT,
+    price INTEGER,
     image TEXT,
     orders INTEGER
   );`);
@@ -49,7 +49,7 @@ db.serialize(() => {
     content TEXT,
     image TEXT,
     date DATETIME,
-    likes INTEGER
+    views INTEGER
     );`);
 });
 

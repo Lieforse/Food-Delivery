@@ -39,7 +39,7 @@ route.put("/update/:id", (req, res) => {
   let content = req.body.content;
   let image = req.body.image;
   let date = req.body.date;
-  let likes = req.body.likes;
+  let views = req.body.views;
 
   db.run(
     `
@@ -48,9 +48,9 @@ route.put("/update/:id", (req, res) => {
       content =?,
       image = ?,
       date = ?,
-      likes = ?
+      views = ?
       WHERE news_id = ?`,
-    [name, content, image, date, likes, id],
+    [name, content, image, date, views, id],
     (err) => {
       if (err) {
         res.status(500).json({ status: "error" });
@@ -68,12 +68,12 @@ route.post("/insert", (req, res) => {
   let content = req.body.content;
   let image = req.body.image;
   let date = req.body.date;
-  let likes = req.body.likes;
+  let views = req.body.views;
   db.run(
     `
-    INSERT INTO order_item (name, content, image, date, likes)
+    INSERT INTO news (name, content, image, date, views)
     VALUES(?, ?, ?, ?, ?)`,
-    [name, content, image, date, likes],
+    [name, content, image, date, views],
     (err) => {
       if (err) {
         res.status(500).json({ status: "error" });
