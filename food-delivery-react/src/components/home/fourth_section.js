@@ -9,7 +9,7 @@ export const FourthSection = () => {
           <h2>Latest posts</h2>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-auto">
             <div className="card">
               <img
                 src={
@@ -29,7 +29,7 @@ export const FourthSection = () => {
               </div>
             </div>
           </div>
-          <div className="col">
+          <div className="col-auto">
             <div className="card">
               <img
                 src={
@@ -49,7 +49,7 @@ export const FourthSection = () => {
               </div>
             </div>
           </div>
-          <div className="col">
+          <div className="col-auto">
             <div className="card">
               <img
                 src={

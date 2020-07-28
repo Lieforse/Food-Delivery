@@ -35,10 +35,16 @@ class Home extends React.Component {
     }
     scrollpos = window.scrollY;
 
-    if (scrollpos > 50) {
-      addClassOnScroll();
+    if (
+      document.querySelector(".small-navbar-js").classList.contains("active")
+    ) {
+      header.classList.add("active");
     } else {
-      removeClassOnScroll();
+      if (scrollpos > 50) {
+        addClassOnScroll();
+      } else {
+        removeClassOnScroll();
+      }
     }
   };
 
@@ -53,7 +59,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    meals: state.meals,
+    meals: state.mealsReducer.meals,
   };
 };
 

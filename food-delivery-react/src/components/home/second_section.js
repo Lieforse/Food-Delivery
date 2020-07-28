@@ -18,10 +18,7 @@ class SecondSection extends React.Component {
         arr.push(
           <div className="col-auto" key={this.props.meals[i].meal_id}>
             <div className="img">
-              <img
-                src={"images/images/second_section/specialities1.jpg"}
-                alt=""
-              />
+              <img src={this.props.meals[i].image} alt="" />
             </div>
             <div className="text">
               <h3 className="title">{this.props.meals[i].name}</h3>
@@ -37,10 +34,7 @@ class SecondSection extends React.Component {
               <p>{this.props.meals[i].description}</p>
             </div>
             <div className="img">
-              <img
-                src={"images/images/second_section/specialities1.jpg"}
-                alt=""
-              />
+              <img src={this.props.meals[i].image} alt="" />
             </div>
           </div>
         );
