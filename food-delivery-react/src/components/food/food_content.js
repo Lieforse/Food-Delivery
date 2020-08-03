@@ -90,8 +90,6 @@ class FoodContent extends React.Component {
       pageNumbers.push(i);
     }
 
-    const addActive = (number) => {};
-
     return (
       <nav>
         <ul className="pagination">
@@ -103,9 +101,8 @@ class FoodContent extends React.Component {
             >
               <div
                 className={`page-link ${
-                  this.state.currentPage == number ? "active" : ""
+                  this.state.currentPage === number ? "active" : ""
                 }`}
-                onClick={() => addActive(number)}
               >
                 {number}
               </div>

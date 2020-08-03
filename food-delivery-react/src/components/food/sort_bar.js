@@ -12,6 +12,7 @@ class SortBar extends React.Component {
         "Sort by price: low to high",
         "Sort by default",
       ],
+      sortMethod: "Sort by default",
     };
     this.showSortBar = this.showSortBar.bind(this);
   }
@@ -45,6 +46,7 @@ class SortBar extends React.Component {
 
   sortMethod = (sortItem) => {
     this.props.sortMeals(sortItem);
+    this.setState({ sortMethod: sortItem });
   };
 
   render() {
@@ -64,7 +66,7 @@ class SortBar extends React.Component {
             onClick={() => this.showSortBar()}
           >
             <div className="sort sort-bar-title" id="sort-bar-title-js">
-              <p>Sort by popularity</p>
+              <p>{this.state.sortMethod}</p>
               <p className="mdi mdi-chevron-down"></p>
             </div>
             <div className="sort-bar-menu" id="sort-bar-menu-js">

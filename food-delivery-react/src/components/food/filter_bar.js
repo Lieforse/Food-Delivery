@@ -10,11 +10,11 @@ class FilterBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.categorySet = this.categorySet.bind(this);
+    /* this.categorySet = this.categorySet.bind(this); */
     this.unfoldFilterBar = this.unfoldFilterBar.bind(this);
   }
 
-  categorySet = () => {
+  /* categorySet = () => {
     let categories = [];
     return (categories = [
       ...new Set(this.props.meals.map((meal) => meal.type)),
@@ -25,7 +25,7 @@ class FilterBar extends React.Component {
         <span className="round"></span>
       </label>
     )));
-  };
+  }; */
 
   mealsFilterSearch = (event) => {
     let value = event.target.value;
