@@ -36,6 +36,8 @@ route.get("/select/:id", (req, res) => {
 route.put("/update/:id", (req, res) => {
   let id = req.params.id;
   let name = req.body.name;
+  let type = req.body.type;
+  let content_preview = req.body.content_preview;
   let content = req.body.content;
   let image = req.body.image;
   let date = req.body.date;
@@ -45,12 +47,14 @@ route.put("/update/:id", (req, res) => {
     `
     UPDATE news SET 
       name = ?,
+      type = ?,
+      content_preview = ?,
       content =?,
       image = ?,
       date = ?,
       views = ?
       WHERE news_id = ?`,
-    [name, content, image, date, views, id],
+    [name, type, content_preview, content, image, date, views, id],
     (err) => {
       if (err) {
         res.status(500).json({ status: "error" });
@@ -63,17 +67,41 @@ route.put("/update/:id", (req, res) => {
   );
 });
 
+route.put("/update/views/:id", (req, res) => {
+  let id = req.params.id;
+  let views = req.body.views;
+
+  db.run(
+    `
+    UPDATE news SET 
+      views = ?
+      WHERE news_id = ?`,
+    [views, id],
+    (err) => {
+      if (err) {
+        res.status(500).json({ status: "error" });
+        console.log("update", err);
+      } else {
+        res.status(201).json({ status: "done!" });
+        console.log("news item views was successfully updated");
+      }
+    }
+  );
+});
+
 route.post("/insert", (req, res) => {
   let name = req.body.name;
+  let type = req.body.type;
+  let content_preview = req.body.content_preview;
   let content = req.body.content;
   let image = req.body.image;
   let date = req.body.date;
   let views = req.body.views;
   db.run(
     `
-    INSERT INTO news (name, content, image, date, views)
-    VALUES(?, ?, ?, ?, ?)`,
-    [name, content, image, date, views],
+    INSERT INTO news (name, type, content_preview, content, image, date, views)
+    VALUES(?, ?, ?, ?, ?, ?, ?)`,
+    [name, type, content_preview, content, image, date, views],
     (err) => {
       if (err) {
         res.status(500).json({ status: "error" });

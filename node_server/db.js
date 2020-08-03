@@ -46,6 +46,8 @@ db.serialize(() => {
   CREATE TABLE IF NOT EXISTS news(
     news_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT,
+    type TEXT,
+    content_preview TEXT,
     content TEXT,
     image TEXT,
     date DATETIME,
