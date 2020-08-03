@@ -1,19 +1,43 @@
 import React from "react";
+import { connect } from "react-redux";
+import { newsViewsCounter } from "../actions/newsActions";
 
 class BlogContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      postsPerPage: 6,
+      postsPerPage: 4,
       currentPage: 1,
       currentText: "",
+      currentArticle: null,
     };
     this.paginateNews = this.paginateNews.bind(this);
+    this.datePrettier = this.datePrettier.bind(this);
     this.paginate = this.paginate.bind(this);
   }
 
   componentWillMount() {
     this.paginateNews();
+  }
+
+  componentDidUpdate() {
+    if (this.state.currentArticle !== null) {
+      if (
+        document
+          .querySelector(`.news${this.state.currentArticle}`)
+          .querySelector(".active")
+      ) {
+        let newsCard = document.querySelector(
+          `.news${this.state.currentArticle}`
+        );
+        let newsCardPos = newsCard.offsetTop;
+        window.scrollTo(0, newsCardPos - 150);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   paginateNews = () => {
@@ -26,40 +50,56 @@ class BlogContent extends React.Component {
     );
     let arr = [];
 
-    const readMoreFunc = (content) => {
-      console.log(content);
-      this.state.currentText = content;
+    const readMoreFunc = (id, views) => {
+      let newsCard = document.querySelector(`.news${id}`);
+      let newsCardPos = newsCard.offsetTop;
+      window.scrollTo(0, newsCardPos);
+
+      if (this.state.currentArticle === id) {
+        this.setState({ currentArticle: null });
+      } else {
+        this.setState({ currentArticle: id });
+        this.props.newsViewsCounter(id, views);
+      }
     };
 
     if (this.props.filteredNews[0] === undefined) {
       return false;
     } else {
       arr = currentPosts.map((news) => (
-        <div className="col-auto" key={news.news_id}>
+        <div className={`col-auto news${news.news_id}`} key={news.news_id}>
           <div className="card">
             <img src={news.image} alt="" />
             <div className="card-body">
-              <h5 className="card-title">{news.name}</h5>
-              <p className="card-text">
-                {this.state.currentText !== ""
-                  ? this.state.currentText
-                  : news.content.slice(0, 240)}
-                ...
-              </p>
+              <h5
+                className="card-title"
+                onClick={() => readMoreFunc(news.news_id, news.views)}
+              >
+                {news.name}
+              </h5>
+              <pre
+                className={`card-text ${
+                  news.news_id === this.state.currentArticle ? "active" : ""
+                }`}
+              >
+                {news.news_id === this.state.currentArticle
+                  ? news.content.replace(/\\n/g, "\n\n")
+                  : news.content_preview}
+              </pre>
             </div>
             <div className="card-info">
               <div className="info-container">
                 <p className="likes">
-                  <span className="mdi mdi-eye"></span> 145
+                  <span className="mdi mdi-eye"></span> {news.views}
                 </p>
                 <p className="date">
-                  <span className="mdi mdi-calendar"></span>
-                  {news.date}
+                  <span className="mdi mdi-calendar"></span>{" "}
+                  {this.datePrettier(news.date)}
                 </p>
               </div>
               <button
                 className="btn"
-                onClick={() => readMoreFunc(news.content)}
+                onClick={() => readMoreFunc(news.news_id, news.views)}
               >
                 Read more
               </button>
@@ -69,6 +109,29 @@ class BlogContent extends React.Component {
       ));
     }
     return arr;
+  };
+
+  datePrettier = (elem) => {
+    let dateRaw = elem.split(" ")[0].split("-");
+    let date = [];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    date.push(months[Number(dateRaw[1]) - 1], dateRaw[2], dateRaw[0]);
+    date = date.join(" ");
+    return date;
   };
 
   pagination = () => {
@@ -86,8 +149,16 @@ class BlogContent extends React.Component {
       <nav>
         <ul className="pagination">
           {pageNumbers.map((number) => (
-            <li className="page-item" key={number}>
-              <div className="page-link" onClick={() => this.paginate(number)}>
+            <li
+              className="page-item"
+              key={number}
+              onClick={() => this.paginate(number)}
+            >
+              <div
+                className={`page-link ${
+                  this.state.currentPage === number ? "active" : ""
+                }`}
+              >
                 {number}
               </div>
             </li>
@@ -105,124 +176,19 @@ class BlogContent extends React.Component {
   render() {
     return (
       <div className="news-section">
-        <div className="row">
-          {this.paginateNews()}
-          {/* <div className="col-auto">
-            <div className="card">
-              <img src="/images/images/blog/blog.jpg" alt="" />
-              <div className="card-body">
-                <h5 className="card-title">
-                  Vestibulum tincidunt mauris eu varius
-                </h5>
-                <p className="card-text">
-                  Morbi rhoncus facilisis elit in posuere. Duis pretium sem ac
-                  ipsum pellentesque auctor. Vivamus mollis lacus in purus
-                  luctus sollicitudin.
-                </p>
-              </div>
-              <div className="card-info">
-                <div className="info-container">
-                  <p className="likes">
-                    <span className="mdi mdi-heart-outline"></span> 145
-                  </p>
-                  <p className="date">
-                    <span className="mdi mdi-calendar"></span> July 22, 2020
-                  </p>
-                </div>
-                <a href="" className="btn">
-                  Read more
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="col-auto">
-            <div className="card">
-              <img src="/images/images/blog/blog.jpg" alt="" />
-              <div className="card-body">
-                <h5 className="card-title">
-                  Vestibulum tincidunt mauris eu varius
-                </h5>
-                <p className="card-text">
-                  Morbi rhoncus facilisis elit in posuere. Duis pretium sem ac
-                  ipsum pellentesque auctor. Vivamus mollis lacus in purus
-                  luctus sollicitudin.
-                </p>
-              </div>
-              <div className="card-info">
-                <div className="info-container">
-                  <p className="likes">
-                    <span className="mdi mdi-heart-outline"></span> 145
-                  </p>
-                  <p className="date">
-                    <span className="mdi mdi-calendar"></span> July 22, 2020
-                  </p>
-                </div>
-                <a href="" className="btn">
-                  Read more
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="col-auto">
-            <div className="card">
-              <img src="/images/images/blog/blog.jpg" alt="" />
-              <div className="card-body">
-                <h5 className="card-title">
-                  Vestibulum tincidunt mauris eu varius
-                </h5>
-                <p className="card-text">
-                  Morbi rhoncus facilisis elit in posuere. Duis pretium sem ac
-                  ipsum pellentesque auctor. Vivamus mollis lacus in purus
-                  luctus sollicitudin.
-                </p>
-              </div>
-              <div className="card-info">
-                <div className="info-container">
-                  <p className="likes">
-                    <span className="mdi mdi-heart-outline"></span> 145
-                  </p>
-                  <p className="date">
-                    <span className="mdi mdi-calendar"></span> July 22, 2020
-                  </p>
-                </div>
-                <a href="" className="btn">
-                  Read more
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="col-auto">
-            <div className="card">
-              <img src="/images/images/blog/blog.jpg" alt="" />
-              <div className="card-body">
-                <h5 className="card-title">
-                  Vestibulum tincidunt mauris eu varius
-                </h5>
-                <p className="card-text">
-                  Morbi rhoncus facilisis elit in posuere. Duis pretium sem ac
-                  ipsum pellentesque auctor. Vivamus mollis lacus in purus
-                  luctus sollicitudin.
-                </p>
-              </div>
-              <div className="card-info">
-                <div className="info-container">
-                  <p className="likes">
-                    <span className="mdi mdi-heart-outline"></span> 145
-                  </p>
-                  <p className="date">
-                    <span className="mdi mdi-calendar"></span> July 22, 2020
-                  </p>
-                </div>
-                <a href="" className="btn">
-                  Read more
-                </a>
-              </div>
-            </div>
-          </div> */}
-        </div>
+        <div className="row">{this.paginateNews()}</div>
+        {this.pagination()}
       </div>
     );
   }
 }
 
-export default BlogContent;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    newsViewsCounter: (id, views) => {
+      dispatch(newsViewsCounter(id, views));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(BlogContent);

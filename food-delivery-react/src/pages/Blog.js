@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { newsFetchData } from "../components/actions/newsActions";
 
-import { NewsBar } from "../components/blog/sort_bar";
-import { SideBar } from "../components/blog/side_bar";
+import NewsBar from "../components/blog/sort_bar";
+import SideBar from "../components/blog/side_bar";
 import BlogContent from "../components/blog/news_section";
 
 class Blog extends React.Component {
@@ -20,11 +20,11 @@ class Blog extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <NewsBar />
+        <NewsBar filteredNews={this.props.filteredNews} />
         <div className="container blog-container">
-          <SideBar />
+          <SideBar news={this.props.news} />
           <BlogContent
-            news=/* {newsReducer} */ {this.props.news}
+            news={this.props.news}
             filteredNews={this.props.filteredNews}
           />
         </div>
