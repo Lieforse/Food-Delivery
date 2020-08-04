@@ -90,3 +90,53 @@ export function sortMeals(sortFilter) {
     sortFilter,
   };
 }
+
+export function cartOrderSubmit(cart) {
+  let date = [];
+  let rawDate = new Date().toLocaleString().split(", ");
+  let time = rawDate[1];
+  date.push(rawDate[0].split(".").reverse().join("-"), time);
+  date = date.join(" ");
+  console.log("cart", cart[0].meal_id);
+  return (dispatch) => {
+    fetch(`http://192.168.0.107:4001/order-check/insert`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date: date }),
+    }).then(
+      fetch(`http://192.168.0.107:4001/order-check/select`)
+        .then((response) => response.json())
+        .then((response) =>
+          cart.map((item) => {
+            console.log("item", item.meal_id);
+            fetch(`http://192.168.0.107:4001/order-item/insert`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                mealId: item.meal_id,
+                number: item.quantity,
+                checkId: response[response.length - 1].check_id + 1,
+              }),
+            }).then(
+              fetch(
+                `http://192.168.0.107:4001/meal/update/popularity/${item.meal_id}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    orders: item.orders + item.quantity,
+                  }),
+                }
+              )
+            );
+          })
+        )
+    );
+  };
+}

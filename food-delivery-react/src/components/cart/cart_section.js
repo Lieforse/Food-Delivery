@@ -4,6 +4,7 @@ import {
   cartAddMealQuantity,
   cartSubMealQuantity,
   removeMealFromCart,
+  cartOrderSubmit,
 } from "../actions/mealsActions";
 
 class CartSection extends React.Component {
@@ -17,6 +18,10 @@ class CartSection extends React.Component {
 
   cartMealRemove = (id) => {
     this.props.removeMealFromCart(id);
+  };
+
+  orderSubmit = () => {
+    this.props.cartOrderSubmit(this.props.cart);
   };
 
   render() {
@@ -40,18 +45,15 @@ class CartSection extends React.Component {
                       className="mdi mdi-close"
                       onClick={() => this.cartMealRemove(cartItem.meal_id)}
                     ></span>
-                    <img
-                      src="/images/images/second_section/specialities1.jpg"
-                      alt=""
-                    />
+                    <img src={cartItem.image} alt="" />
                     <h6>{cartItem.name}</h6>
                   </div>
-                  <div className="col col-1 price">{cartItem.price}</div>
+                  <div className="col col-1 price">{cartItem.price}$</div>
                   <div className="col amount">
                     <div className="input-container">
                       <div
                         className="button minus"
-                        tabindex="0"
+                        tabIndex="0"
                         onClick={() => this.cartSubQuantity(cartItem.meal_id)}
                       ></div>
                       <input
@@ -64,7 +66,7 @@ class CartSection extends React.Component {
                       />
                       <div
                         className="button plus"
-                        tabindex="0"
+                        tabIndex="0"
                         onClick={() => this.cartAddQuantity(cartItem.meal_id)}
                       ></div>
                     </div>
@@ -81,6 +83,7 @@ class CartSection extends React.Component {
                     type="button"
                     className="button"
                     value="Confirm order"
+                    onClick={() => this.orderSubmit()}
                   />
                 </div>
               </div>
@@ -102,6 +105,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     removeMealFromCart: (id) => {
       dispatch(removeMealFromCart(id));
+    },
+    cartOrderSubmit: (cart) => {
+      dispatch(cartOrderSubmit(cart));
     },
   };
 };
