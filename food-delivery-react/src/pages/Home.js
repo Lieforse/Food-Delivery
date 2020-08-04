@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { mealsFetchData } from "../components/actions/mealsActions";
+import { newsFetchData } from "../components/actions/newsActions";
 import { Intro } from "../components/home/intro";
 import SecondSection from "../components/home/second_section";
 import { ThirdSection } from "../components/home/third_section";
-import { FourthSection } from "../components/home/fourth_section";
+import FourthSection from "../components/home/fourth_section";
 
 class Home extends React.Component {
   constructor(props) {
@@ -18,7 +19,10 @@ class Home extends React.Component {
         <Intro />
         <SecondSection meals={this.props.meals} />
         <ThirdSection />
-        <FourthSection />
+        <FourthSection
+          news={this.props.news}
+          filteredNews={this.props.filteredNews}
+        />
       </div>
     );
   }
@@ -50,7 +54,8 @@ class Home extends React.Component {
 
   componentDidMount() {
     window.addEventListener("scroll", this.scrollF);
-    this.props.fetchData();
+    this.props.mealsFetchData();
+    this.props.newsFetchData();
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.scrollF);
@@ -60,12 +65,15 @@ class Home extends React.Component {
 const mapStateToProps = (state) => {
   return {
     meals: state.mealsReducer.meals,
+    news: state.newsReducer.news,
+    filteredNews: state.newsReducer.filteredNews,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchData: () => dispatch(mealsFetchData()),
+    mealsFetchData: () => dispatch(mealsFetchData()),
+    newsFetchData: () => dispatch(newsFetchData()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
