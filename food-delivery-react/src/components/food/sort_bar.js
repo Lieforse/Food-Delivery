@@ -20,27 +20,24 @@ class SortBar extends React.Component {
   showSortBar = () => {
     let sortBar = document.querySelector("#sort-bar-menu-js");
 
+    function outsideClickListener(event) {
+      if (
+        !sortBar.contains(event.target) &&
+        !document.querySelector("#sort-bar-container-js").contains(event.target)
+      ) {
+        sortBar.classList.remove("active");
+        document.querySelector("#sort-bar-title-js").classList.remove("active");
+        document.removeEventListener("click", outsideClickListener);
+      }
+    }
+
     if (sortBar.classList.contains("active")) {
       sortBar.classList.remove("active");
       document.querySelector("#sort-bar-title-js").classList.remove("active");
-      document.addEventListener("click", outsideClickListener);
-      function outsideClickListener(event) {
-        if (
-          !sortBar.contains(event.target) &&
-          !document
-            .querySelector("#sort-bar-container-js")
-            .contains(event.target)
-        ) {
-          sortBar.classList.remove("active");
-          document
-            .querySelector("#sort-bar-title-js")
-            .classList.remove("active");
-          console.log("active");
-        }
-      }
     } else {
       sortBar.classList.add("active");
       document.querySelector("#sort-bar-title-js").classList.add("active");
+      document.addEventListener("click", outsideClickListener);
     }
   };
 

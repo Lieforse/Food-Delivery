@@ -15,26 +15,24 @@ class NewsBar extends React.Component {
   showSortBar = () => {
     let sortBar = document.querySelector("#sort-bar-news-js");
 
+    function outsideClickListener(event) {
+      if (
+        !sortBar.contains(event.target) &&
+        !document.querySelector("#sort-bar-container-js").contains(event.target)
+      ) {
+        sortBar.classList.remove("active");
+        document.querySelector("#sort-bar-title-js").classList.remove("active");
+        document.removeEventListener("click", outsideClickListener);
+      }
+    }
+
     if (sortBar.classList.contains("active")) {
       sortBar.classList.remove("active");
       document.querySelector("#sort-bar-title-js").classList.remove("active");
-      document.addEventListener("click", outsideClickListener);
-      function outsideClickListener(event) {
-        if (
-          !sortBar.classList.contains(event.target) &&
-          !document
-            .querySelector("#sort-bar-container-js")
-            .contains(event.target)
-        ) {
-          sortBar.classList.remove("active");
-          document
-            .querySelector("#sort-bar-title-js")
-            .classList.remove("active");
-        }
-      }
     } else {
       sortBar.classList.add("active");
       document.querySelector("#sort-bar-title-js").classList.add("active");
+      document.addEventListener("click", outsideClickListener);
     }
   };
 
@@ -60,10 +58,7 @@ class NewsBar extends React.Component {
             onClick={() => this.showSortBar()}
           >
             <div className="sort sort-bar-title" id="sort-bar-title-js">
-              <p>
-                {/* Sort by popularity */}
-                {this.state.sortMethod}
-              </p>
+              <p>{this.state.sortMethod}</p>
               <p className="mdi mdi-chevron-down"></p>
             </div>
             <div className="sort-bar-menu" id="sort-bar-news-js">

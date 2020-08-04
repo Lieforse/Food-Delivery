@@ -15,7 +15,9 @@ function mealsReducer(state = initialState, action) {
       filteredProducts: action.meals,
     });
   } else if (action.type === "ADD_TO_CART") {
-    let addedMeal = state.meals.find((meal) => meal.meal_id === action.id);
+    let addedMeal = state.filteredProducts.find(
+      (meal) => meal.meal_id === action.id
+    );
     let existed_meal = state.cart.find((meal) => action.id === meal.meal_id);
 
     if (!("quantity" in addedMeal)) {
@@ -43,9 +45,13 @@ function mealsReducer(state = initialState, action) {
       };
     }
   } else if (action.type === "ADD_QUANTITY") {
-    let newMeals = [...state.meals];
-    let foundItem = state.meals.find((meal) => meal.meal_id === action.id);
-    let foundId = state.meals.findIndex((meal) => meal.meal_id === action.id);
+    let newMeals = [...state.filteredProducts];
+    let foundItem = state.filteredProducts.find(
+      (meal) => meal.meal_id === action.id
+    );
+    let foundId = state.filteredProducts.findIndex(
+      (meal) => meal.meal_id === action.id
+    );
 
     if (!("quantity" in foundItem)) {
       foundItem.quantity = 1;
@@ -64,12 +70,16 @@ function mealsReducer(state = initialState, action) {
     newMeals[foundId] = foundItem;
     return {
       ...state,
-      meals: newMeals,
+      filteredProducts: newMeals,
     };
   } else if (action.type === "SUB_QUANTITY") {
-    let newMeals = [...state.meals];
-    let foundItem = state.meals.find((meal) => meal.meal_id === action.id);
-    let foundId = state.meals.findIndex((meal) => meal.meal_id === action.id);
+    let newMeals = [...state.filteredProducts];
+    let foundItem = state.filteredProducts.find(
+      (meal) => meal.meal_id === action.id
+    );
+    let foundId = state.filteredProducts.findIndex(
+      (meal) => meal.meal_id === action.id
+    );
 
     if (!("quantity" in foundItem)) {
       foundItem.quantity = 1;
@@ -89,7 +99,7 @@ function mealsReducer(state = initialState, action) {
     newMeals[foundId] = foundItem;
     return {
       ...state,
-      meals: newMeals,
+      filteredProducts: newMeals,
     };
   } else if (action.type === "CART_ADD_QUANTITY") {
     let newCart = [...state.cart];
@@ -269,7 +279,7 @@ function mealsReducer(state = initialState, action) {
     newState.appliedSortMethod = sortFilter;
 
     if (sortFilter === "Sort by popularity") {
-      newState.filteredProducts.sort((a, b) => a.orders - b.orders);
+      newState.filteredProducts.sort((a, b) => b.orders - a.orders);
     } else if (sortFilter === "Sort by price: high to low") {
       newState.filteredProducts.sort(
         (a, b) => parseInt(b.price) - parseInt(a.price)
