@@ -42,7 +42,6 @@ route.put("/update/:id", (req, res) => {
   let image = req.body.image;
   let orders = req.body.orders;
 
-  console.log(name);
   db.run(
     `
     UPDATE meal SET 
@@ -62,6 +61,28 @@ route.put("/update/:id", (req, res) => {
       } else {
         res.status(201).json({ status: "done!" });
         console.log("meal was successfully updated");
+      }
+    }
+  );
+});
+
+route.put("/update/popularity/:id", (req, res) => {
+  let id = req.params.id;
+  let orders = req.body.orders;
+
+  db.run(
+    `
+    UPDATE meal SET 
+      orders = ?
+      WHERE meal_id = ?`,
+    [orders, id],
+    (err) => {
+      if (err) {
+        res.status(500).json({ status: "error" });
+        console.log("update", err);
+      } else {
+        res.status(201).json({ status: "done!" });
+        console.log("meal orders was successfully updated");
       }
     }
   );
