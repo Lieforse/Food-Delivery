@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { newsViewsCounter } from "../actions/newsActions";
+import { newsViewsCounter } from "../../actions/newsActions";
 
 class BlogContent extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class BlogContent extends React.Component {
     this.paginateNews = this.paginateNews.bind(this);
     this.datePrettier = this.datePrettier.bind(this);
     this.paginate = this.paginate.bind(this);
+    this.openArticle = this.openArticle.bind(this);
   }
 
   componentWillMount() {
@@ -21,6 +22,19 @@ class BlogContent extends React.Component {
   }
 
   componentDidUpdate() {
+    this.openArticle();
+    this.scrollToArticle();
+    if (
+      this.props.filteredNews !== this.props.news &&
+      this.state.currentPage !== 1
+    ) {
+      this.setState({ currentPage: 1 });
+    } else {
+      return false;
+    }
+  }
+
+  openArticle = () => {
     if (this.state.currentArticle !== null) {
       if (
         document
@@ -38,7 +52,27 @@ class BlogContent extends React.Component {
     } else {
       return false;
     }
-  }
+  };
+
+  scrollToArticle = () => {
+    if (this.props.scrollToArticleId !== 0) {
+      let newsCard = document.querySelector(
+        `.news${this.props.scrollToArticleId}`
+      );
+      let newsCardPos = newsCard.offsetTop;
+
+      if (this.props.scrollToArticleId <= 4) {
+        window.scrollTo(0, newsCardPos - 150);
+      } else {
+        this.setState({
+          currentPage: Math.ceil(this.props.scrollToArticleId / 4),
+        });
+        window.scrollTo(0, newsCardPos - 150);
+      }
+    } else {
+      return false;
+    }
+  };
 
   paginateNews = () => {
     const indexOfLastPost = this.state.postsPerPage * this.state.currentPage;

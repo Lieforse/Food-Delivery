@@ -1,5 +1,5 @@
 import React from "react";
-import { sortNews } from "../actions/newsActions";
+import { sortNews } from "../../actions/newsActions";
 import { connect } from "react-redux";
 
 class NewsBar extends React.Component {
@@ -46,11 +46,7 @@ class NewsBar extends React.Component {
       <div className="sort-bar">
         <div className="container">
           <p className="results">
-            Showing{" "}
-            {this.props.filteredNews.length > 4
-              ? 4
-              : this.props.filteredNews.length}{" "}
-            of {this.props.filteredNews.length} results
+            Showing {this.props.filteredNews.length} results{" "}
           </p>
           <div
             className="sort-bar-container"

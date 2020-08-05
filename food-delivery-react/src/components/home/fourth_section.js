@@ -1,4 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { scrollToArticle } from "../../actions/newsActions";
 
 class FourthSection extends React.Component {
   constructor(props) {
@@ -30,6 +33,10 @@ class FourthSection extends React.Component {
     return date;
   };
 
+  scrollToArticle = (id) => {
+    this.props.scrollToArticle(id);
+  };
+
   render() {
     return (
       <div className="fourth-section">
@@ -47,7 +54,14 @@ class FourthSection extends React.Component {
                     <p className="card-text date">
                       {this.datePrettier(news.date)}
                     </p>
-                    <h5 className="card-title">{news.name}</h5>
+                    <Link className="link" to="/blog">
+                      <h5
+                        className="card-title"
+                        onClick={() => this.scrollToArticle(news.news_id)}
+                      >
+                        {news.name}
+                      </h5>
+                    </Link>
                     <p className="card-text">
                       {news.content_preview.slice(0, 122)[
                         news.content_preview.length - 1
@@ -66,4 +80,12 @@ class FourthSection extends React.Component {
   }
 }
 
-export default FourthSection;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    scrollToArticle: (id) => {
+      dispatch(scrollToArticle(id));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(FourthSection);

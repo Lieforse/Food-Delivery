@@ -231,7 +231,7 @@ function mealsReducer(state = initialState, action) {
     return newState;
   } else if (action.type === "MEALS_FILTER_CATEGORY_REMOVE") {
     let newState = Object.assign({}, state);
-    let value = action.value;
+    let value = action.value.toLowerCase();
 
     newState.appliedFilters.splice(newState.appliedFilters.indexOf(value), 1);
 
@@ -291,6 +291,12 @@ function mealsReducer(state = initialState, action) {
     } else {
       newState.filteredProducts.sort((a, b) => a.meal_id - b.meal_id);
     }
+    return newState;
+  } else if (action.type === "CART_ORDER_SUBMIT") {
+    let newState = JSON.parse(JSON.stringify(state));
+    newState.cart = [];
+    newState.total = 0;
+
     return newState;
   } else {
     return state;

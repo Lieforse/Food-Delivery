@@ -1,5 +1,5 @@
 import React from "react";
-import { sortMeals } from "../actions/mealsActions";
+import { sortMeals } from "../../actions/mealsActions";
 import { connect } from "react-redux";
 
 class SortBar extends React.Component {
@@ -51,11 +51,7 @@ class SortBar extends React.Component {
       <div className="sort-bar">
         <div className="container">
           <p className="results">
-            Showing{" "}
-            {this.props.filteredProducts.length > 6
-              ? 6
-              : this.props.filteredProducts.length}{" "}
-            of {this.props.filteredProducts.length} results
+            Showing {this.props.filteredProducts.length} results
           </p>
           <div
             className="sort-bar-container"

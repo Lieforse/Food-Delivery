@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { mealsFetchData } from "../components/actions/mealsActions";
-import { newsFetchData } from "../components/actions/newsActions";
+import { mealsFetchData } from "../actions/mealsActions";
+import { newsFetchData } from "../actions/newsActions";
 import { Intro } from "../components/home/intro";
 import SecondSection from "../components/home/second_section";
 import { ThirdSection } from "../components/home/third_section";

@@ -4,7 +4,7 @@ import {
   searchNews,
   newsAddCategoryFilter,
   newsRemoveCategoryFilter,
-} from "../actions/newsActions";
+} from "../../actions/newsActions";
 
 class SideBar extends React.Component {
   constructor(props) {

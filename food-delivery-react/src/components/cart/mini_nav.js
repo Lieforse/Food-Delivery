@@ -7,13 +7,21 @@ export const MiniNav = () => {
       <div className="container">
         <ul className="breadcrumbs">
           <li className="breadcrumb-item">
-            <NavLink className="breadcrumb-link" activeClassName="active" to="/home">
+            <NavLink
+              className="breadcrumb-link"
+              activeClassName="active"
+              to="/home"
+            >
               Home
             </NavLink>
           </li>
           {" / "}
           <li className="breadcrumd-item">
-            <NavLink className="breadcrumb-link" activeClassName="active" to="/cart">
+            <NavLink
+              className="breadcrumb-link"
+              activeClassName="active"
+              to="/cart"
+            >
               Cart
             </NavLink>
           </li>

@@ -4,7 +4,7 @@ import {
   searchMeals,
   addCategoryFilter,
   removeCategoryFilter,
-} from "../actions/mealsActions";
+} from "../../actions/mealsActions";
 
 class FilterBar extends React.Component {
   constructor(props) {

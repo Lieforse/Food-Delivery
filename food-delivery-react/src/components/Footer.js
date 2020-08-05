@@ -12,9 +12,12 @@ export const Footer = () => {
           alt=""
         />
         <div className="social-media">
-          <a href="" className="mdi mdi-instagram"></a>
-          <a href="" className="mdi mdi-facebook"></a>
-          <a href="" className="mdi mdi-twitter"></a>
+          <a
+            href="https://www.instagram.com/"
+            className="mdi mdi-instagram"
+          ></a>
+          <a href="https://www.facebook.com/" className="mdi mdi-facebook"></a>
+          <a href="https://twitter.com/" className="mdi mdi-twitter"></a>
         </div>
       </div>
     </footer>

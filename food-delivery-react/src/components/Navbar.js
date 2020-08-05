@@ -50,7 +50,7 @@ class Navbar extends React.Component {
     return (
       <nav className="navbar navbar-expand-lg fixed-top" id="navbar-js">
         <div className="container">
-          <a href="#" className="navbar-brand my-nav-brand">
+          <NavLink to="/" className="navbar-brand my-nav-brand">
             <img
               src={process.env.PUBLIC_URL + "images/logo/logo_header.png"}
               alt=""
@@ -60,7 +60,7 @@ class Navbar extends React.Component {
             <p>
               Food<span className="my-nav-span">Delivery</span>
             </p>
-          </a>
+          </NavLink>
           <ul className="navbar-nav">
             <li className="nav-item">
               <NavLink className="nav-link" to="/" exact>

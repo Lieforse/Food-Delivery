@@ -4,7 +4,7 @@ import {
   addMealToCart,
   addMealQuantity,
   subMealQuantity,
-} from "../actions/mealsActions";
+} from "../../actions/mealsActions";
 
 class FoodContent extends React.Component {
   constructor(props) {
@@ -19,6 +19,17 @@ class FoodContent extends React.Component {
 
   componentWillMount() {
     this.paginateMeals();
+  }
+
+  componentDidUpdate() {
+    if (
+      this.props.filteredProducts !== this.props.meals &&
+      this.state.currentPage !== 1
+    ) {
+      this.setState({ currentPage: 1 });
+    } else {
+      return false;
+    }
   }
 
   paginateMeals = () => {

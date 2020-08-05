@@ -4,6 +4,7 @@ const initialState = {
   newsAppliedFilters: [],
   filteredNews: [],
   newsAppliedSortMethod: "",
+  scrollToArticleId: 0,
 };
 
 function newsReducer(state = initialState, action) {
@@ -61,7 +62,6 @@ function newsReducer(state = initialState, action) {
 
           return new Date(firstDate) - new Date(secondDate);
         });
-        console.log("ftersort", newState.filteredNews);
       } else {
         newState.filteredNews.sort((a, b) => a.news_id - b.news_id);
       }
@@ -71,7 +71,6 @@ function newsReducer(state = initialState, action) {
   } else if (action.type === "NEWS_FILTER_CATEGORY_ADD") {
     let newState = Object.assign({}, state);
     let value = action.value;
-    console.log("value", value);
     newState.newsAppliedFilters.push(value.toLowerCase());
 
     if (state.newsAppliedSearch.length !== 0) {
@@ -141,7 +140,6 @@ function newsReducer(state = initialState, action) {
 
     if (state.newsAppliedSortMethod.length !== 0) {
       let sortFilter = state.newsAppliedSortMethod;
-      console.log(sortFilter, "sdfasdf");
       if (sortFilter === "Sort by popularity") {
         newState.filteredNews.sort((a, b) => b.views - a.views);
       } else if (sortFilter === "Sort by date") {
@@ -158,7 +156,6 @@ function newsReducer(state = initialState, action) {
 
           return new Date(firstDate) - new Date(secondDate);
         });
-        console.log("ftersort", newState.filteredNews);
       } else {
         newState.filteredNews.sort((a, b) => a.news_id - b.news_id);
       }
@@ -186,10 +183,14 @@ function newsReducer(state = initialState, action) {
 
         return new Date(firstDate) - new Date(secondDate);
       });
-      console.log("ftersort", newState.filteredNews);
     } else {
       newState.filteredNews.sort((a, b) => a.news_id - b.news_id);
     }
+    return newState;
+  } else if (action.type === "SCROLL_TO_NEWS") {
+    let newState = JSON.parse(JSON.stringify(state));
+    newState.scrollToArticleId = action.id;
+
     return newState;
   } else {
     return state;

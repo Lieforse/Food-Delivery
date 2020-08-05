@@ -62,3 +62,10 @@ export function sortNews(sortFilter) {
     sortFilter,
   };
 }
+
+export function scrollToArticle(id) {
+  return {
+    type: "SCROLL_TO_NEWS",
+    id,
+  };
+}

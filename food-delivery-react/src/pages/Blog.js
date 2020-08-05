@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { newsFetchData } from "../components/actions/newsActions";
+import { newsFetchData } from "../actions/newsActions";
 
 import NewsBar from "../components/blog/sort_bar";
 import SideBar from "../components/blog/side_bar";
@@ -10,10 +10,8 @@ class Blog extends React.Component {
   componentDidMount() {
     document.querySelector("#navbar-js").classList.add("active");
     this.props.fetchData();
-    console.log("props-after: ", this.props);
   }
   componentWillUnmount() {
-    console.log(document);
     document.querySelector("#navbar-js").classList.remove("active");
   }
 
@@ -26,6 +24,7 @@ class Blog extends React.Component {
           <BlogContent
             news={this.props.news}
             filteredNews={this.props.filteredNews}
+            scrollToArticleId={this.props.scrollToArticleId}
           />
         </div>
       </div>
@@ -34,10 +33,10 @@ class Blog extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("newsState", state);
   return {
     news: state.newsReducer.news,
     filteredNews: state.newsReducer.filteredNews,
+    scrollToArticleId: state.newsReducer.scrollToArticleId,
   };
 };
 

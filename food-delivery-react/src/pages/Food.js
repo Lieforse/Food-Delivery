@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { mealsFetchData } from "../components/actions/mealsActions";
+import { mealsFetchData } from "../actions/mealsActions";
 
 import SortBar from "../components/food/sort_bar";
 import FilterBar from "../components/food/filter_bar";

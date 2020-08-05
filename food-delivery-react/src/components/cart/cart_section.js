@@ -5,7 +5,7 @@ import {
   cartSubMealQuantity,
   removeMealFromCart,
   cartOrderSubmit,
-} from "../actions/mealsActions";
+} from "../../actions/mealsActions";
 
 class CartSection extends React.Component {
   cartAddQuantity = (id) => {
@@ -21,7 +21,17 @@ class CartSection extends React.Component {
   };
 
   orderSubmit = () => {
-    this.props.cartOrderSubmit(this.props.cart);
+    if (this.props.cart.length === 0) {
+      return false;
+    } else {
+      let btn = document.getElementById("button-js");
+      if (btn.value === "Confirm order") {
+        btn.value = "Confirmed";
+        this.props.cartOrderSubmit(this.props.cart);
+      } else {
+        btn.value = "Confirm order";
+      }
+    }
   };
 
   render() {
@@ -82,6 +92,7 @@ class CartSection extends React.Component {
                   <input
                     type="button"
                     className="button"
+                    id="button-js"
                     value="Confirm order"
                     onClick={() => this.orderSubmit()}
                   />
